@@ -40,3 +40,13 @@ module Intro where
 -- not a silver bullet
 -- it's still a tool, and tools require proper usage (https://pbs.twimg.com/media/E7Kc0OhVUAAV0xz?format=jpg&name=small)
 -- monads aren't hard (in haskell), they're only scary sounding
+
+-- TODO: syntax and values
+-- ghci
+-- calling functions
+-- base types
+-- function definition
+-- type declarations
+-- pattern matching
+-- if
+-- operators
