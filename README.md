@@ -1,4 +1,4 @@
-## [Таблица с точки]() (TODO)
+## [Таблица с точки](https://docs.google.com/spreadsheets/d/1ppKu58yrYZ4FGwv5nBLYBA_yKsClQcV10KpDkZkRspg/)
 
 ## Участие в курса
 
