@@ -11,22 +11,33 @@ module ADTs where
 -- TODO: talk about
 -- * pls write on discord
 -- * scoring table
--- * where from last week
--- * pragmas on the top of files
 -- * first homework?
 
 -- show:
+-- * pragmas on the top of files
+-- * where from last week
 -- * remind about sections
 -- * mention inline evaluation of expressions
+
 -- * RPS - "enum"
 -- * ask about gadt or normal
 -- * mention Bool
 -- * deriving Show
 
 data RPS
+  = Rock
+  | Paper
+  | Scissors
+  deriving Show
 
+-- beats x y -- x бие ли y?
 beats :: RPS -> RPS -> Bool
-beats = undefined
+beats Rock Scissors = True
+beats Rock _ = False
+beats Paper Rock = True
+beats Paper _ = False
+beats Scissors Paper = True
+beats Scissors _ = False
 
 -- struct Point {
 --   float x;
@@ -35,43 +46,79 @@ beats = undefined
 -- Point somePoint = Point{5, 3};
 
 -- regular syntax
-data Point
+data Point = MkPoint Float Float
+  deriving Show
 
 somePoint :: Point
-somePoint = undefined
-
--- gadt syntax
-data Point1 where
-
-somePoint1 :: Point1
-somePoint1 = undefined
+somePoint = MkPoint 0 1
 
 isInFirstQuadrant :: Point -> Bool
-isInFirstQuadrant = undefined
+isInFirstQuadrant (MkPoint x y) = x > 0 && y > 0
 
 invert :: Point -> Point
-invert = undefined
-
-data Colour
-
-data Breed
+invert (MkPoint x y) = MkPoint (negate x) (negate y)
 
 data Animal
+  = Cat Colour
+  | Dog Breed
+  deriving Show
 
+data Colour = Black | Orange
+  deriving Show
+
+data Breed = Golden | Husky
+  deriving Show
+
+--pirin :: Animal
+--pirin = Dog Husky
+
+--showAnimal :: Animal -> String
+--showAnimal (Cat Black) = "black cat"
+--showAnimal (Cat Orange) = "orange cat"
+--showAnimal (Dog Golden) = "dog"
+--showAnimal (Dog Husky) = "half-man dog"
+
+-- 01010101101100
+-- 0
+-- z
+-- 3
+-- sssz
 data Nat
-
-addNat :: Nat -> Nat -> Nat
-addNat = undefined
-
-natToInteger :: Nat -> Integer
-natToInteger = undefined
+  = Zero
+  | Suc Nat
+  deriving Show
 
 -- >>> integerToNat 0
 -- Zero
 -- >>> integerToNat 3
 -- Suc (Suc (Suc Zero))
 integerToNat :: Integer -> Nat
-integerToNat = undefined
+integerToNat 0 = Zero
+integerToNat n = Suc (integerToNat (n - 1))
+
+natToInteger :: Nat -> Integer
+natToInteger Zero = 0
+natToInteger (Suc n) = 1 + natToInteger n
+-- natToInteger (Suc (Suc Zero)) ==
+-- 1 + natToInteger (Suc Zero) ==
+-- 1 + (1 + natToInteger Zero) ==
+-- 1 + (1 + 0) ==
+-- 2
+
+-- myPlus x y = y                if x == 0
+-- myPlus x y = succ(pred(x) + y) else
+-- >>> addNat (Suc (Suc (Suc Zero))) (Suc (Suc Zero))
+-- Suc (Suc (Suc (Suc (Suc Zero))))
+
+-- addNat (Suc (Suc (Suc Zero))) (Suc (Suc Zero)) ==
+-- Suc (addNat (Suc (Suc Zero)) (Suc (Suc Zero))) ==
+-- Suc (Suc (addNat (Suc Zero) (Suc (Suc Zero)))) ==
+-- Suc (Suc (Suc (addNat Zero (Suc (Suc Zero))))) ==
+-- Suc (Suc (Suc (Suc (Suc Zero))))
+
+addNat :: Nat -> Nat -> Nat
+addNat Zero m = m
+addNat (Suc n) m = Suc (addNat n m)
 
 -- TASK
 -- define what the "next" throw you can do is in the "usual" ordering of RPS
