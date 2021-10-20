@@ -1,0 +1,41 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           homework00
+version:        0.1.0.0
+build-type:     Simple
+extra-source-files:
+    README.md
+
+library
+  exposed-modules:
+      Binary
+  other-modules:
+      Paths_homework00
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Werror -Wincomplete-uni-patterns -Widentities -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+test-suite homework00-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      BinarySpec
+      Instances
+      Paths_homework00
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Werror -Wincomplete-uni-patterns -Widentities -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , base >=4.7 && <5
+    , generic-random
+    , homework00
+    , hspec
+  default-language: Haskell2010
