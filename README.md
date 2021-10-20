@@ -1,5 +1,3 @@
-## [Таблица с точки](https://docs.google.com/spreadsheets/d/1ppKu58yrYZ4FGwv5nBLYBA_yKsClQcV10KpDkZkRspg/)
-
 ## Участие в курса
 
 Курсът има "неофициални" чат канали във ФМИ Discord-а. Там ще се
