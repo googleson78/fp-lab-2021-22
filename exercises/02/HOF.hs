@@ -3,12 +3,25 @@ module HOF where
 
 import Prelude hiding (const, ($), curry, uncurry, id, swap)
 
--- TODO mention homework!
-
 data Nat
   = Zero
   | Suc Nat
   deriving Show
+
+
+-- f :: Integer -> Integer -> Integer
+f :: Integer -> (Integer -> Integer)
+-- > f x y
+-- > (f x) y
+-- > (f x) y
+f x y = x + y
+-- f x y = x * 10
+
+-- >>> (\<args> -> <body>) <args>
+-- <body>
+
+applyTwice :: (a -> a) -> a -> a
+applyTwice f x = f (f x)
 
 integerToNat :: Integer -> Nat
 integerToNat 0 = Zero
@@ -21,40 +34,60 @@ eqNat (Suc _) Zero = False
 eqNat (Suc n) (Suc m) = eqNat n m
 
 -- TODO live
-data Tuple
-
---fstTuple :: Tuple a b -> a
--- TODO mention (a, b)
-
--- TODO live
 -- lambdas also
+-- identity
 id :: a -> a
-id = undefined
+id x = x
+
+addOne :: Integer -> Integer
+addOne = \n -> 1 + n
 
 -- TODO: live, example Nats
 -- show how it's the same as id?
 apply :: (a -> b) -> a -> b
-apply = undefined
+apply f x = f x
+-- > Suc (Suc (Suc (.........)))
+
+-- Suc $ Suc $ Suc $ Suc Zero
+-- Suc $ (Suc $ (Suc $ (Suc Zero)))
+-- Suc (Suc $ (Suc $ (Suc Zero)))
+-- Suc (Suc (Suc (Suc Zero)))
 
 ($) :: (a -> b) -> a -> b
 ($) = apply
 
 infixr 0 $
 
+($$$) :: Integer -> Integer -> Integer -> Integer
+($$$) x y z = x + y + z
+
 -- TODO live
 addTwo :: Nat -> Nat
-addTwo = undefined
+addTwo = addNat $ Suc $ Suc Zero
+
+-- TODO live
+data Tuple a b = MkTuple a b
+  deriving Show
+
+-- (a, b)
+
+x :: Tuple Integer Char
+x = MkTuple 42 'a'
+
+-- https://jitsi.ludost.net/fp
+
+fstTuple :: Tuple a b -> a
+fstTuple (MkTuple x _) = x
+-- TODO mention (a, b)
 -- TODO sections
 
+addNat :: Nat -> (Nat -> Nat)
+addNat Zero m = m
+addNat (Suc n) m = Suc $ addNat n m
+
 natToInteger :: Nat -> Integer
-natToInteger = undefined
-
-addNat :: Nat -> Nat -> Nat
-addNat = undefined
-
--- TODO live if time permits, addNat, natToInteger
-foldNat :: (a -> a) -> a -> Nat -> a
-foldNat = undefined
+natToInteger Zero = 0
+natToInteger (Suc n) = 1 + natToInteger n
 
 -- EXERCISE
 -- Take two arguments and return the second.
@@ -64,9 +97,7 @@ foldNat = undefined
 -- EXAMPLES
 -- >>> const 5 6
 -- 5
--- >>> foldNat (const 42) 1337 Zero
--- 42
--- >>> foldNat (const 42) 1337 $ Suc Zero
+-- >>> applyTwice (const 42) 1337
 -- 42
 const :: a -> b -> a
 const = undefined
@@ -75,33 +106,15 @@ const = undefined
 -- Compose two functions, very useful very often
 -- there's a builtin (.) for this - the dot mimics mathematical notation f o g
 -- EXAMPLES
--- >>> let f = (+3) . (*5) in f 4
+-- >>> let f = compose (+3) (*5) in f 4
 -- 23
--- >>> let f = (*5) . (+5) in f 4
+-- >>> let f = compose (*5) (+5) in f 4
 -- 45
 compose :: (b -> c) -> (a -> b) -> a -> c
 compose = undefined
 
 -- EXERCISE
--- Implement multNat using foldNat.
--- EXAMPLES
--- >>> natToInteger $ multNat (integerToNat 2) (integerToNat 3)
--- 6
-multNat :: Nat -> Nat -> Nat
-multNat = undefined
-
--- EXERCISE
--- Implement exponentiation(n ^ m) using foldNat.
--- EXAMPLES
--- >>> natToInteger $ expNat (integerToNat 2) (integerToNat 10)
--- 1024
-expNat :: Nat -> Nat -> Nat
-expNat = undefined
-
--- EXERCISE
 -- Iterate a function f n times over a base value x.
--- Wait, this looks familar. Didn't we do this already?
--- You can even use compose and eta reduction in some way, here.
 -- EXAMPLES
 -- >>> iterateN (+1) 1 10
 -- 11
@@ -115,7 +128,7 @@ iterateN = undefined
 -- EXAMPLES
 -- >>> swap $ MkTuple 42 69
 -- MkTuple 69 42
--- swap :: Tuple a b -> Tuple b a
+swap :: Tuple a b -> Tuple b a
 swap = undefined
 
 -- EXERCISE
@@ -123,7 +136,7 @@ swap = undefined
 -- EXAMPLES
 -- >>> first (*2) $ MkTuple 21 1337
 -- MkTuple 42 1337
--- first :: (a -> b) -> Tuple a c -> Tuple b c
+first :: (a -> b) -> Tuple a c -> Tuple b c
 first = undefined
 
 -- EXERCISE
@@ -132,7 +145,7 @@ first = undefined
 -- EXAMPLES
 -- >>> curryTuple (\(MkTuple x y) -> x * y) 23 3
 -- 69
--- curry :: (Tuple a b -> c) -> a -> b -> c
+curry :: (Tuple a b -> c) -> a -> b -> c
 curry = undefined
 
 -- EXERCISE
@@ -141,7 +154,7 @@ curry = undefined
 -- EXAMPLES
 -- >>> uncurryTuple (\x y -> x + y) $ MkTuple 23 46
 -- 69
--- uncurry :: (a -> b -> c) -> Tuple a b -> c
+uncurry :: (a -> b -> c) -> Tuple a b -> c
 uncurry = undefined
 
 -- EXERCISE
@@ -149,12 +162,6 @@ uncurry = undefined
 -- Think about what the type should be.
 -- mapTuple :: ???
 -- mapTuple = undefined
-
--- EXERCISE
--- Look at the recursor for nats - foldNat. In there we replaced Nats constructors, with things.
--- Think about how a recursor for tuples should look like, and implement it.
--- foldTuple :: ???
--- foldTuple = undefined
 
 -- EXERCISE
 -- Find the fixpoint (f x == x) of a function, if it exists.
@@ -175,17 +182,3 @@ fixpoint = undefined
 fact :: Integer -> Integer
 fact 0 = 1
 fact n = n * fact (n - 1)
-
--- EXERCISE
--- If Nats can be converted to "n times applications" via foldNat,
--- is it perhaps true that "n times applications" can also be converted to Nats somehow?
--- Ignore the forall, it just says the given function *must* be polymorphic.
--- EXAMPLES
--- >>> iterateToNat (\f x -> f (f (f x)))
--- Suc (Suc (Suc Zero))
-iterateToNat :: (forall a. (a -> a) -> a -> a) -> Nat
-iterateToNat f = undefined
-
--- EXERCISE
--- Figure out how to extend foldNat so you can easily write factorial over nats.
--- You need some extra info at each step - what is it?
