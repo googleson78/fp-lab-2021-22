@@ -39,4 +39,4 @@ instance Arbitrary TrailingOne where
 
 instance Arbitrary Can where
   arbitrary =
-    frequency [(1, pure canZero), (4, CanOne <$> arbitrary)]
+    frequency [(1, pure canZero), (4, genericArbitraryU `suchThat` (/= canZero))]
