@@ -11,8 +11,6 @@ canOne = undefined
 data Can
   deriving Show
 
-infixl 6 ::.
-
 canZero :: Can
 canZero = undefined
 
