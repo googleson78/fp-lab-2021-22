@@ -30,3 +30,14 @@ tests:
     - hspec
     - QuickCheck
     - generic-random
+
+flags:
+  can:
+    description: Run Can.hs tests
+    manual: true
+    default: false
+
+
+when:
+- condition: flag(can)
+  cpp-options: -DCAN

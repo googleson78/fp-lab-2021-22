@@ -1,7 +1,10 @@
 {-# LANGUAGE BlockArguments #-}
+{-# LANGUAGE CPP #-}
+
 module CanSpec (canSpec) where
 
 import Test.Hspec
+#ifdef CAN
 import Can
 import Binary
 import Test.Hspec.QuickCheck
@@ -24,3 +27,8 @@ lastBinary End = Nothing
 lastBinary (End :. Zero) = Just Zero
 lastBinary (End :. One) = Just One
 lastBinary (bi :. _) = lastBinary bi
+#else
+canSpec :: Spec
+canSpec = describe "Can.hs" $ it "tests are disabled" $
+  pendingWith "To enable them run with \"--flag homework00:can\""
+#endif

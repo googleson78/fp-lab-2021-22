@@ -10,6 +10,11 @@ build-type:     Simple
 extra-source-files:
     README.md
 
+flag can
+  description: Run Can.hs tests
+  manual: True
+  default: False
+
 library
   exposed-modules:
       Binary
@@ -21,6 +26,8 @@ library
   ghc-options: -Wall -Werror -Wincomplete-uni-patterns -Widentities -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+  if flag(can)
+    cpp-options: -DCAN
   default-language: Haskell2010
 
 test-suite homework00-test
@@ -40,4 +47,6 @@ test-suite homework00-test
     , generic-random
     , homework00
     , hspec
+  if flag(can)
+    cpp-options: -DCAN
   default-language: Haskell2010
