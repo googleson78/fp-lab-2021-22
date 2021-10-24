@@ -1,3 +1,4 @@
+{-# LANGUAGE EmptyDataDeriving #-}
 module Can where
 
 import Binary (Binary(..), Bit(..))
