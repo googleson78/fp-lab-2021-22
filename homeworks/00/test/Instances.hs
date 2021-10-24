@@ -1,6 +1,9 @@
 {-# LANGUAGE StandaloneDeriving #-}
-{-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# OPTIONS_GHC -fno-warn-unused-imports #-}
+{-# OPTIONS_GHC -fno-warn-dodgy-imports #-}
 
 module Instances () where
 
@@ -29,6 +32,7 @@ instance Arbitrary Bit where
     bool <- arbitrary
     pure $ if bool then One else Zero
 
+#ifdef CAN
 deriving instance Generic TrailingOne
 deriving instance Generic Can
 
@@ -40,3 +44,4 @@ instance Arbitrary TrailingOne where
 instance Arbitrary Can where
   arbitrary =
     frequency [(1, pure canZero), (4, genericArbitraryU `suchThat` (/= canZero))]
+#endif
