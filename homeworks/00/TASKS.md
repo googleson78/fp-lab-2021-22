@@ -127,6 +127,8 @@ End :. One :. One :. One
 1
 ```
 
+## Не е позволено да използвате `binaryToInteger` и `integerToBinary` по-надолу
+
 ### `hasLeadingZero :: Binary -> Bool`
 
 Проверете дали даденото число има водеща нула.
