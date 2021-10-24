@@ -13,6 +13,7 @@ extra-source-files:
 library
   exposed-modules:
       Binary
+      Can
   other-modules:
       Paths_homework00
   hs-source-dirs:
@@ -27,6 +28,7 @@ test-suite homework00-test
   main-is: Spec.hs
   other-modules:
       BinarySpec
+      CanSpec
       Instances
       Paths_homework00
   hs-source-dirs:
