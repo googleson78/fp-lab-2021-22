@@ -12,8 +12,8 @@ import Instances ()
 
 canSpec :: Spec
 canSpec = describe "Can.hs" do
-  prop "forgetTrailingOne always generates a binary with a trailing one" do
-    (== Just One) . lastBinary . forgetTrailingOne
+  prop "forgetLeadingOne always generates a binary with a leading one" do
+    (== Just One) . lastBinary . forgetLeadingOne
   prop "only represents canonical binary numbers" do
     not . hasLeadingZero . forget
   prop "forget . Can.canonicalise === Binary.canonicalise" do

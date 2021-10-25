@@ -3,10 +3,10 @@ module Can where
 
 import Binary (Binary(..), Bit(..))
 
-data TrailingOne
+data LeadingOne
   deriving Show
 
-canOne :: TrailingOne
+canOne :: LeadingOne
 canOne = undefined
 
 data Can
@@ -18,8 +18,8 @@ canZero = undefined
 snoc :: Can -> Bit -> Can
 snoc = undefined
 
-forgetTrailingOne :: TrailingOne -> Binary
-forgetTrailingOne = undefined
+forgetLeadingOne :: LeadingOne -> Binary
+forgetLeadingOne = undefined
 
 forget :: Can -> Binary
 forget = undefined

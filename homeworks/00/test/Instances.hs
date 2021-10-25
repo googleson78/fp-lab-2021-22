@@ -11,12 +11,12 @@ import Binary (Binary(..), Bit(..))
 import Test.QuickCheck (Arbitrary(..), chooseInt, vectorOf, frequency, suchThat)
 import Generic.Random (genericArbitraryU)
 import GHC.Generics (Generic)
-import Can (canZero, canOne, Can(..), TrailingOne(..))
+import Can (canZero, canOne, Can(..), LeadingOne(..))
 
 deriving instance Eq Binary
 deriving instance Eq Bit
 deriving instance Eq Can
-deriving instance Eq TrailingOne
+deriving instance Eq LeadingOne
 
 instance Arbitrary Binary where
   arbitrary =
@@ -33,10 +33,10 @@ instance Arbitrary Bit where
     pure $ if bool then One else Zero
 
 #ifdef CAN
-deriving instance Generic TrailingOne
+deriving instance Generic LeadingOne
 deriving instance Generic Can
 
-instance Arbitrary TrailingOne where
+instance Arbitrary LeadingOne where
   arbitrary = do
     let nonOne = genericArbitraryU `suchThat` (/= canOne)
     frequency [(1, pure canOne), (4, nonOne)]
