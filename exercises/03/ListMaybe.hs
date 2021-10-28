@@ -5,6 +5,35 @@ import Prelude hiding (length, (++), zip, zipWith, reverse, concat, sum, take, p
 -- TODO:
 -- homework has points and deadline!
 -- let, where
+
+-- double :: Integer -> Integer
+-- double x = x * x
+-- ($) :: (a -> b) -> a -> b
+-- ($) f x = f x
+
+quad :: Integer -> Integer
+quad x = double $ double x
+  where
+    double :: Integer -> Integer
+    double x = x * x
+
+quad' :: Integer -> Integer
+quad' x =
+  let
+    double :: Integer -> Integer
+    double x = x * x
+   in double (double x)
+
+isZero' :: Integer -> Bool
+isZero' 0 = True
+isZero' _ = False
+
+isZero :: Integer -> Bool
+isZero n =
+  case n + 10 of
+    0 -> True
+    _ -> False
+
 -- quad with double
 -- case
 -- maybe, lists, cons name
@@ -14,31 +43,47 @@ import Prelude hiding (length, (++), zip, zipWith, reverse, concat, sum, take, p
 -- * many lists
 -- * filtering
 
-headMaybe :: [a] -> Maybe a
-headMaybe = undefined
+-- data Maybe a
+--   = Nothing
+--   | Just a
+--   deriving Show
+
+-- Cons(truct)
+-- cons
+data List a
+  = Nil -- []
+  | Cons a (List a) -- (:)
+  deriving Show
 
 safeDiv :: Integer -> Integer -> Maybe Integer
-safeDiv = undefined
+safeDiv x y =
+  if y == 0
+  then Nothing
+  else Just $ x `div` y
+
+-- f :: Integer -> Integer -> Maybe Integer
+-- f x y =
+--   case safeDiv x y of
+--     Nothing -> Nothing
+--     Just z -> Just (z * 10)
 
 null :: [a] -> Bool
-null = undefined
+null [] = True
+null _ = False
 
+-- xs
+-- dog, dogs
+-- x, xs
 sum :: [Integer] -> Integer
-sum = undefined
+sum [] = 0
+sum (n : ns) = n + sum ns
+
+headMaybe :: [a] -> Maybe a
+headMaybe [] = Nothing
+headMaybe (x:xs) = Just x
 
 cartesianProd :: [a] -> [b] -> [(a, b)]
-cartesianProd = undefined
-
--- TODO if time, maybe as "possible failure", lists as "one of many"
-addMaybe :: Maybe Integer -> Maybe Integer -> Maybe Integer
-addMaybe = undefined
-
-lift2Maybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
-lift2Maybe = undefined
-
--- TODO: lists as "many results"
-mySqrt :: Float -> [Float]
-mySqrt x = undefined
+cartesianProd xs ys = [(x, y) | x <- xs, y <- ys]
 
 addList :: [Integer] -> [Integer] -> [Integer]
 addList = undefined
