@@ -98,6 +98,9 @@ properties = describe "properties" do
   describe "integerToBinary" do
     prop "generates canonical vectors" \(NonNegative n) ->
       not $ hasLeadingZero $ integerToBinary n
+  describe "addBinary" do
+    prop "behaves like + on integers numbers" \bin1 bin2 ->
+      binaryToInteger (addBinary bin1 bin2) `shouldBe` binaryToInteger bin1 + binaryToInteger bin2
   describe "conversions" do
     prop "integerToBinary . binaryToInteger === canonicalise" \bin ->
       integerToBinary (binaryToInteger bin) `shouldBe` canonicalise bin
