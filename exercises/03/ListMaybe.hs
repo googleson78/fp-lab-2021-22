@@ -345,6 +345,18 @@ zip = undefined
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith = undefined
 
+-- EXERCISE
+-- Transpose a matrix. Assume all the inner lists have the same length.
+-- HINT: zipWith and map might be useful here.
+-- EXAMPLES
+-- >>> transpose [[1]]
+-- [[1]]
+-- >>> transpose [[1,2,3],[4,5,6],[7,8,9]]
+-- [[1,4,7],[2,5,8],[3,6,9]]
+-- >>> transpose [[1],[2]]
+-- [[1,2]]
+-- >>> transpose [[1,2,3],[4,5,6]]
+-- [[1,4],[2,5],[3,6]]
 transpose :: [[a]] -> [[a]]
 transpose = undefined
 
