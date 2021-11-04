@@ -370,6 +370,8 @@ validateList = undefined
 -- execute a "failing computation" for all the items in a list,
 -- immediately "aborting" upon a failure.
 -- Think about how to reuse validateList.
+-- This is called traverseListMaybe, because it's a special case of a generic function called traverse
+-- that performs "actions" for each element of a "collection", specialised to List and Maybe
 -- EXAMPLES
 -- >>> traverseListMaybe (\x -> if even x then Just x else Nothing) [2,4,6]
 -- Just [2,4,6]
