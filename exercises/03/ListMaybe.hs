@@ -2,7 +2,7 @@ module ListMaybe where
 
 import Prelude hiding (length, (++), zip, zipWith, reverse, concat, sum, take, product, drop, subtract, filter, map, all, and, null)
 
--- TODO:
+-- WEEK 3 TODO:
 -- homework has points and deadline!
 -- let, where
 
@@ -84,6 +84,18 @@ headMaybe (x:xs) = Just x
 
 cartesianProd :: [a] -> [b] -> [(a, b)]
 cartesianProd xs ys = [(x, y) | x <- xs, y <- ys]
+
+-- WEEK 4 TODO:
+-- mention homework deadline, mention look at prs
+-- mention that String == [Char]
+
+-- Maybe as "computation that can fail" Lists as "one of many"
+
+-- TODO: lists as "many results"
+-- lift2Maybe
+-- safeDiv
+-- mySqrt :: Float -> [Float]
+-- lift2List
 
 addList :: [Integer] -> [Integer] -> [Integer]
 addList = undefined
@@ -293,6 +305,7 @@ cartesian = undefined
 -- Again, we can generalise cartesian to work with arbitrary functions instead of just (,),
 -- taking elements "each with each"
 -- This is also the generalisation of cartesian, as seen in the examples.
+-- NOTE: this was an exercise in week 3, but I've shown it live in week 4, so you can just ignore it.
 -- EXAMPLES
 -- >>> lift2List (+) [1] [2]
 -- [3]
@@ -302,8 +315,8 @@ cartesian = undefined
 -- [1,2,2,4,3,6]
 -- >>> lift2List (,) [1,2,3] [4,5,6] -- same as cartesian [1,2,3] [4,5,6]
 -- [(1,4),(1,5),(1,6),(2,4),(2,5),(2,6),(3,4),(3,5),(3,6)]
-lift2List :: (a -> b -> c) -> [a] -> [b] -> [c]
-lift2List = undefined
+lift2List' :: (a -> b -> c) -> [a] -> [b] -> [c]
+lift2List' = undefined
 
 -- EXERCISE
 -- The "filtering" part of a list comprehension - leave only those elements, that satisfy the given predicate.
@@ -318,6 +331,105 @@ lift2List = undefined
 -- [2,3,5,7,11,13,17,19]
 filter :: (a -> Bool) -> [a] -> [a]
 filter = undefined
+
+-- EXERCISE
+-- Parse a character into a digit.
+-- EXAMPLES
+-- >>> parseDigit '6'
+-- Just 6
+-- >>> parseDigit '9'
+-- Just 9
+-- >>> parseDigit 'c'
+-- Nothing
+parseDigit :: Char -> Maybe Integer
+parseDigit = undefined
+
+-- EXERCISE
+-- See if all the values in a list xs are Just, returning Just xs only if they are.
+-- We can think of this as all the computations in a list "succeeding",
+-- and therefore the entire "computation list" has "succeeded.
+-- Note that it is vacuously that all the elements in the empty list are Just.
+-- EXAMPLES
+-- >>> validateList []
+-- Just []
+-- >>> validateList [Just 42, Just 6, Just 9]
+-- Just [42,6,9]
+-- >>> validateList [Nothing, Just 6, Just 9]
+-- Nothing
+-- >>> validateList [Just 42, Nothing, Just 9]
+-- Nothing
+-- >>> validateList [Just 42, Just 6, Nothing]
+-- Nothing
+validateList :: [Maybe a] -> Maybe [a]
+validateList = undefined
+
+-- EXERCISE
+-- You often have a collection (list) of things, for each of which you want to
+-- perform some computation, that might fail (returning Maybe).
+-- Let's implement a function to do exactly this -
+-- execute a "failing computation" for all the items in a list,
+-- immediately "aborting" upon a failure.
+-- Think about how to reuse validateList.
+-- EXAMPLES
+-- >>> traverseListMaybe (\x -> if even x then Just x else Nothing) [2,4,6]
+-- Just [2,4,6]
+-- >>> traverseListMaybe (\x -> if even x then Just x else Nothing) [1,2,3]
+-- Nothing
+-- >>> traverseListMaybe parseDigit ['0','2']
+-- Just [0,2]
+-- >>> traverseListMaybe parseDigit ['a','2']
+-- Nothing
+traverseListMaybe :: (a -> Maybe b) -> [a] -> Maybe [b]
+traverseListMaybe = undefined
+
+-- EXERCISE
+-- Convert a list of digits to a number. Assume that the input list only has Integers
+-- in the range [0,9]. Let's assume the empty list converts to 0.
+-- HINT: It might be easier to first reverse the list and then operate on it with a helper.
+-- EXAMPLES
+-- >>> digitsToNumber [6,9]
+-- 69
+-- >>> digitsToNumber [1,2,0]
+-- 120
+-- >>> digitsToNumber [0,1,2,0]
+-- 120
+digitsToNumber :: [Integer] -> Integer
+digitsToNumber = undefined
+  where
+    -- for some reason, we often call helpers in haskell "go", as in "go do the thing"
+    go = undefined
+
+-- EXERCISE
+-- Combine the previous functions to parse a number.
+-- EXAMPLES
+-- >>> parseNumber "0"
+-- Just 0
+-- >>> parseNumber "3"
+-- Just 3
+-- >>> parseNumber "69"
+-- Just 69
+-- >>> parseNumber "0123"
+-- Just 123
+-- >>> parseNumber "blabla"
+-- Nothing
+-- >>> parseNumber "133t"
+-- Nothing
+parseNumber :: String -> Maybe Integer
+parseNumber = undefined
+
+-- EXERCISE
+-- Notice how in parseNumber, in the Nothing case we returned Nothing,
+-- and in the Just case, we returned Just again, with a "non-maybe" function inside.
+-- This turns out to be very useful, and if you compare it to the map for lists, it's almost the same.
+-- Let's write it now, so we don't have to do that pattern match again in the future.
+-- Afterwards, you can reuse this function in parseNumber.
+-- EXAMPLES
+-- >>> maybeMap succ $ Just 5
+-- Just 6
+-- >>> maybeMap succ Nothing
+-- Nothing
+maybeMap :: (a -> b) -> Maybe a -> Maybe b
+maybeMap = undefined
 
 -- EXERCISE
 -- Another way to combine lists
