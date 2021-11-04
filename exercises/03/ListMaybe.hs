@@ -377,10 +377,10 @@ validateList = undefined
 -- Just [2,4,6]
 -- >>> traverseListMaybe (\x -> if even x then Just x else Nothing) [1,2,3]
 -- Nothing
--- >>> traverseListMaybe parseDigit ['0','2']
--- Just [0,2]
--- >>> traverseListMaybe parseDigit ['a','2']
+-- >>> traverseListMaybe (5 `safeDiv`) [0,2]
 -- Nothing
+-- >>> traverseListMaybe (8 `safeDiv`) [3,2]
+-- Just [2,4]
 traverseListMaybe :: (a -> Maybe b) -> [a] -> Maybe [b]
 traverseListMaybe = undefined
 
