@@ -77,6 +77,10 @@
 
 * Специализирани ресурси:
 
+  * защо да правим `a -> Maybe b`, вместо `a -> Bool`:
+    * https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
+    * https://runtimeverification.com/blog/code-smell-boolean-blindness/
+    * https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/
   * Мазохизъм/Програмиране с типове - [Thinking with Types](https://thinkingwithtypes.com/)
   * Паралелно и конкуретно програмиране - [Parallel and Concurrent Programming in Haskell](https://simonmar.github.io/pages/pcph.html)
   * Разглеждане на фундаментални типови класове - [Typeclassopedia](https://wiki.haskell.org/Typeclassopedia)
