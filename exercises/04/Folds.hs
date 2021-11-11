@@ -10,12 +10,15 @@ module Folds where
 
 import Prelude hiding (or, foldr, length, (++), zip, zipWith, reverse, concat, sum, take, product, drop, subtract, filter, map, all, and, null)
 
+-- mention hoogle
+
 -- "boolean blindness" - prefer returning Maybe/"a proof", instead of a Bool and doing an if :
 -- https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 -- https://runtimeverification.com/blog/code-smell-boolean-blindness/
 -- https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/
 
--- mention hoogle
+-- fold
+-- catamorphism
 
 data Nat
   = Zero
@@ -28,32 +31,72 @@ integerToNat n = Suc $ integerToNat $ n - 1
 
 -- show how we reached map
 squareList :: [Integer] -> [Integer]
-squareList = undefined
+squareList [] = []
+squareList (x:xs) = x * x : squareList xs
 
 megaPair :: a -> [b] -> [(a, b)]
-megaPair = undefined
+megaPair _ [] = []
+megaPair x (y:ys) = (x, y) : megaPair x ys
 
-addNat :: Nat -> (Nat -> Nat)
-addNat = undefined
+map' :: (a -> b) -> [a] -> [b]
+map' _ [] = []
+map' f (x : xs) = f x : map' f xs
+
+addNat :: Nat -> Nat -> Nat
+addNat Zero m = m
+addNat (Suc n) m = Suc (addNat n m)
 
 multNat :: Nat -> Nat -> Nat
-multNat = undefined
+multNat Zero _ = Zero
+multNat (Suc n) m = addNat m (multNat n m)
 
-foldNat :: a
-foldNat = undefined
+foldNat :: (a -> a) -> a -> Nat -> a
+foldNat _ v Zero = v
+foldNat f v (Suc n) = f (foldNat f v n)
+
+addNat' :: Nat -> Nat -> Nat
+addNat' n m = foldNat Suc m n
+
+-- n * m
+-- n пъти да съберем m със себе си
+-- 0 * m
+multNat' :: Nat -> Nat -> Nat
+multNat' n m = foldNat (addNat m) Zero n
+-- > multNat' (Suc (Suc Zero)) m
+-- > foldNat (addNat m) Zero (Suc (Suc Zero))
+-- > addNat m (foldNat (addNat m) Zero (Suc Zero))
+-- > addNat m (addNat m (foldNat (addNat m) Zero Zero))
+
+-- > Suc (Suc Zero))
+-- > f   (f   v)
+
+-- Suc (Suc (Suc (Suc (Suc (Suc Zero)))))
 
 sum :: [Integer] -> Integer
-sum = undefined
+sum [] = 0 -- 0 + x == x == x + 0
+sum (x:xs) = x + sum xs
 
 product :: [Integer] -> Integer
-product = undefined
--- stop here, ask for generalisation
+product [] = 1 -- 1 * x == x == x * 1
+product (x:xs) = x * product xs
 
 append :: [a] -> [a] -> [a]
-append = undefined
+append [] ys = ys
+append (x:xs) ys = x : append xs ys
 
-foldr :: a
-foldr = undefined
+append' :: [a] -> [a] -> [a]
+append' xs ys = foldr (:) ys xs
+
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr _ v [] = v
+foldr f v (x:xs) = f x $ foldr f v xs
+
+-- foldr f v [1,2,3]
+-- f 1 $ foldr f v [2,3]
+-- f 1 $ f 2 $ foldr f v [3]
+-- f 1 $ f 2 $ f 3 $ foldr f v []
+-- (:) 1 ((:) 2 ((:) 3 []))
+-- f   1 (f   2 (f   3 v))
 
 -- EXERCISE
 -- Implement natToInteger using foldNat.
