@@ -345,7 +345,7 @@ suc n = undefined
 -- We can also add these. Here we need to think about how to add f n times to another Natural.
 -- Note that usually
 -- add n m = n suc m
--- Would be ok as a definition, however, due to some constraints in how ghc works, is not accepted (resolved in ghc 9.2 with ImpredicatveTypes)
+-- Would be ok as a definition, however, due to some constraints in how ghc works, is not accepted (resolved in ghc 9.2 with ImpredicativeTypes)
 -- EXAMPLES
 -- >>> iterateToNat $ add (suc (suc zero)) zero
 -- Suc (Suc Zero)
