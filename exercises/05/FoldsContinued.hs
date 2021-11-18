@@ -26,10 +26,78 @@ import qualified Prelude
 -- (:) 1 ((:) 2 ((:) 3 []))
 -- f   1 (f   2 (f   3 v))
 
+-- f 1 (f 2 (f 3 v))
+
+-- foldr (-) 6 [1,2,3]
+-- 1 - (2 - (3 - 6))
+-- (((6 - 1) - 2) - 3)
+
+minusFrom :: Integer -> [Integer] -> Integer
+minusFrom n [] = n
+minusFrom n (x:xs) = minusFrom ((-) n x) xs
+
+-- f (f (f v 1) 2) 3
+
+-- foldl f acc [1,2,3] ==
+-- foldl f (f acc 1) [2,3] ==
+-- foldl f (f (f acc 1) 2) [3] ==
+-- foldl f (f (f (f acc 1) 2) 3) [] ==
+-- (f (f (f acc 1) 2) 3)
+
+-- foldl (\acc x -> )
+-- foldr (\x rec -> )
+
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr _ v [] = v
+foldr f v (x:xs) = f x $ foldr f v xs
+
 -- mention "mnemonic" for order of function args on foldr and foldl
 -- mention "mnemonics" for function args
 
--- append - both foldl and foldr? why? what's the difference?
+-- concat - both foldl and foldr? why? what's the difference?
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl _ acc [] = acc
+foldl f acc (x:xs) = foldl f (f acc x) xs
+
+concat' :: [[a]] -> [a]
+concat' [] = []
+concat' (xs:xss) = (++) xs (concat' xss)
+
+concat'' :: [[a]] -> [a]
+concat'' = foldr (++) []
+
+-- concat'' [[1,2], [2,4]]
+-- foldr (++) [] [[1,2], [2,4]] ==
+-- (++) [1,2] [[2,4]] ==
+-- (++) [1,2] ((++) [2,4] []) ==
+-- [1,2] ++ ([2,4] ++ []) ==
+
+concat''' :: [[a]] -> [a]
+concat''' = foldl (++) []
+-- concat''' [[1,2], [2,4]] ==
+-- foldl (++) [] [[1,2], [2,4]] ==
+-- foldl (++) ((++) [] [1,2]) [[2,4]] ==
+-- foldl (++) ((++) ((++) [] [1,2]) [2,4]) [] ==
+-- (++) ((++) [] [1,2]) [2,4] ==
+
+
+-- length xss == m
+-- n
+
+-- foldl - [3,4,1,2] ++ [2,4] - O(?)
+-- foldr - [1,2] ++ ([2,4] ++ []) - O(?), но по-зле от горното
+
+append''' :: [a] -> [a] -> [a]
+append''' [] ys = ys
+append''' (x:xs) ys = x : append''' xs ys
+
+-- (++) :: [a] -> [a] -> [a]
+-- n, m
+-- (++) - O(n)
+
+-- a * (b * c) == (a * b) * c
+-- e * a == a == a * e
 
 data Nat
   = Zero
@@ -78,17 +146,6 @@ sum (x:xs) = x + sum xs
 product :: [Integer] -> Integer
 product [] = 1 -- 1 * x == x == x * 1
 product (x:xs) = x * product xs
-
-append :: [a] -> [a] -> [a]
-append [] ys = ys
-append (x:xs) ys = x : append xs ys
-
-append' :: [a] -> [a] -> [a]
-append' xs ys = foldr (:) ys xs
-
-foldr :: (a -> b -> b) -> b -> [a] -> b
-foldr _ v [] = v
-foldr f v (x:xs) = f x $ foldr f v xs
 
 -- EXERCISE
 -- Implement natToInteger using foldNat.
