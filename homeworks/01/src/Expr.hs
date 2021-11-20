@@ -4,17 +4,6 @@ module Expr where
 
 import Prelude hiding (lookup, unlines, unwords)
 
-lookup :: String -> Context -> Maybe Integer
-lookup = undefined
-
-maybeAndThen :: Maybe a -> (a -> Maybe b) -> Maybe b
-maybeAndThen = undefined
-
-infixl 1 `maybeAndThen`
-
-traverseListMaybe :: (a -> Maybe b) -> [a] -> Maybe [b]
-traverseListMaybe = undefined
-
 data Expr
   = Var String
   | Val Integer
@@ -31,6 +20,17 @@ type Context = [(String, Integer)]
 
 extend :: String -> Integer -> Context -> Context
 extend x n = ((x, n):)
+
+lookup :: String -> Context -> Maybe Integer
+lookup = undefined
+
+maybeAndThen :: Maybe a -> (a -> Maybe b) -> Maybe b
+maybeAndThen = undefined
+
+infixl 1 `maybeAndThen`
+
+traverseListMaybe :: (a -> Maybe b) -> [a] -> Maybe [b]
+traverseListMaybe = undefined
 
 freeVars :: Expr -> [String]
 freeVars = undefined
