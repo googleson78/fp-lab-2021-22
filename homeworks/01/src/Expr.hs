@@ -70,10 +70,7 @@ solvingPartialEval :: Bool
 solvingPartialEval = False
 
 partialEval :: Expr -> Expr
-partialEval = go []
-  where
-    go :: Context -> Expr -> Expr
-    go = undefined
+partialEval = undefined
 
 solvingSum :: Bool
 solvingSum = False
