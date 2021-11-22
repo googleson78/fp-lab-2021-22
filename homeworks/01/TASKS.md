@@ -88,7 +88,7 @@ data Expr
 * `SumList` - събираме резултата от пресмятането на списък от изрази
 * `Sum i limex inside` - ще означава
 
-    <img src="https://latex.codecogs.com/gif.latex?\sum_{i=0}^{limex}{inside}" />
+    ![sum-img](img/sum.png)
 
     т.е. оценяваме `inside` многократно, като всеки път `i` свързваме с нова стойност,
     варираща от 0 до оценката на `limex`, и сумираме резултатите на всичките оценки на
