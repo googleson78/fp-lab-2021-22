@@ -8,20 +8,20 @@
 
 module Instances where
 
-import Expr (solvingSum, Expr(..), Oper(..))
+import Expr (solvingSum, Expr(..), OperType(..))
 import GHC.Generics (Generic)
 import Generic.Random (withBaseCase, genericArbitraryRecG, genericArbitraryU, W, (%), Weights)
 import Test.QuickCheck (Arbitrary (..), Gen, elements, oneof, genericShrink, suchThat)
 
-deriving instance Eq Oper
+deriving instance Eq OperType
 
 deriving instance Eq Expr
 
-deriving instance Generic Oper
+deriving instance Generic OperType
 
 deriving instance Generic Expr
 
-instance Arbitrary Oper where
+instance Arbitrary OperType where
   arbitrary = genericArbitraryU
 
 instance Arbitrary Expr where

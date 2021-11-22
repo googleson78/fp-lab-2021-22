@@ -7,13 +7,13 @@ import Prelude hiding (lookup, unlines, unwords)
 data Expr
   = Var String
   | Val Integer
-  | Oper Oper Expr Expr
+  | Oper OperType Expr Expr
   | If Expr Expr Expr
   | SumList [Expr]
   | Sum String Expr Expr
   deriving (Show)
 
-data Oper
+data OperType
   deriving (Show)
 
 type Context = [(String, Integer)]
