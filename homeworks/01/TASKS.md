@@ -320,7 +320,7 @@ eval :: Context -> Expr -> Integer
 eval :: Context -> Expr -> Maybe Integer
 ```
 
-Имплементирайте новият `eval`.
+Имплементирайте новия `eval`.
 
 Примери:
 ```haskell
