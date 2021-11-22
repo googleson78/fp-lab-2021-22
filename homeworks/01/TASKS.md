@@ -123,7 +123,7 @@ extend x n = ((x, n):)
 
 Първо - няколко помощни функции.
 
-### `lookup`
+### `lookup :: String -> Context -> Maybe Integer`
 
 Имплементирайте търсене на стойност по даден ключ.
 
@@ -142,7 +142,7 @@ Nothing
 Just 5
 ```
 
-### `maybeAndThen`
+### `maybeAndThen :: Maybe a -> (a -> Maybe b) -> Maybe b`
 
 Функция, която абстрахира "работата в контекст на `Maybe`".
 
@@ -216,7 +216,7 @@ getTwo x y ctxt =
 -- and it's also very close to something else we'll encounter later
 ```
 
-### `traverseListMaybe`
+### `traverseListMaybe :: (a -> Maybe b) -> [a] -> Maybe [b]`
 
 Функция която вече сме виждали на упражнение:
 
@@ -279,7 +279,7 @@ Sum "i" (Var "i") (Var "i")
 Тя е свободна, от това че участва в горната грнаица на сумата, а е свързана, защото участва във вътрешния израз на сумата.
 
 
-### `freeVars`
+### `freeVars :: Expr -> [String]`
 
 Намерете всичките свободни променливи на даден израз.
 
@@ -293,13 +293,13 @@ Sum "i" (Var "i") (Var "i")
 ["i", "y", "z"]
 ```
 
-### `OperType`
+### `data OperType`
 
 Напишете `OperType` типа, така че да поддържа поне събиране и умножение.
 
 В следващата задача за `eval` ще имплементиране и интерпретацията му като "двуместна функция".
 
-### `eval`
+### `eval :: Context -> Expr -> Maybe Integer`
 
 Тъй като вече имаме променливи, ще трябва някакъв начин да им даваме стойности.
 
@@ -372,7 +372,7 @@ Just 165
 ## Компилация
 Второ - още няколко помощни функции.
 
-### `intersperse`
+### `intersperse :: a -> [a] -> [a]`
 
 Вмъкнете стойност между всеки два елемента на подадения списък:
 
@@ -386,7 +386,7 @@ Just 165
 []
 ```
 
-### `unwords`
+### `unwords :: [String] -> String`
 
 Слива списък от низове, слагайки празни места между тях.
 
@@ -402,7 +402,7 @@ Just 165
 "Pirin ate the pizza!"
 ```
 
-### `unlines`
+### `unlines :: [String] -> String`
 
 Слива списък от думи, слагайки нови редове между тях.
 
@@ -537,14 +537,14 @@ mkArrayStart x = if x < 0 then Nothing else Just x
 Целта на това е да намаля "шума", който ще получавате от тестовете, преди да сте започнали
 да имплементирате компилатор частта.
 
-### `printRacketExpr`
+### `printRacketExpr :: RacketExpr -> String`
 
 Имплементирайте принтенето на единичен racket израз.
 
 * `Name x` искаме да се преврежда до `x`.
 * `List [x0, x1, ... xn]` искаме да се превежда до `(x0 x1 ... xn)`.
 
-### `printRacketProgram`
+### `printRacketProgram :: Context -> RacketProgram -> String`
 
 Имплементирайте принтенето на racket програма.
 
@@ -575,7 +575,7 @@ mkArrayStart x = if x < 0 then Nothing else Just x
 ```
 и така бихме могли да компилираме и изпълним `Var "x"`
 
-### `compileToRacket`
+### `compileToRacket :: Expr -> RacketExpr`
 
 Имплементирайте главната функция грижеща се за компилация.
 
@@ -660,7 +660,7 @@ If
 ако имахме странични ефекти, би било възможно условието да се провали по други
 начини (например прочитаме файл който го няма).
 
-### `partialEval`
+### `partialEval :: Expr -> Expr`
 
 Имплементирайте функцията `partialEval`, която да прави описаната
 по-горе оптимизация.
