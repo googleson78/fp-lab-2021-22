@@ -192,13 +192,23 @@ getTwo x y ctxt =
   lookup x ctxt `maybeAndThen` \xVal ->
   lookup y ctxt `maybeAndThen` \yVal ->
   Just (xVal, yVal)
--- maybeAndThen is left-associative, so
--- mx `maybeAndThen` f `maybeAndThen` g
--- is actually
--- (mx `maybeAndThen` f) `maybeAndThen` g
--- (the other bracketing wouldn't type check anyway)
+-- with some more explicit parens:
+-- lookup x ctxt `maybeAndThen` (\xVal ->
+-- lookup y ctxt `maybeAndThen` (\yVal ->
+-- Just (xVal, yVal)))
 --
--- we could've instead written this as:
+-- with some more explicit indentation:
+-- lookup x ctxt `maybeAndThen` \xVal ->
+--   lookup y ctxt `maybeAndThen` \yVal ->
+--     Just (xVal, yVal)
+--
+-- without the infix syntax:
+-- note that in general instead of f x y z we can write
+-- f
+--   x
+--   y
+--   z
+-- so with this knowledge, we could've instead written getTwo like so:
 -- maybeAndThen
 --   (lookup x ctxt)
 --   (\xVal ->
