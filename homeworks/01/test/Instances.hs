@@ -38,7 +38,9 @@ instance Arbitrary Expr where
         sumListWeight %
         sumWeight %
         ()
-  shrink = genericShrink
+  -- we don't shrink vars, because this generates "" as a var name, which isn't valid for the compiler.
+  shrink (Var _) = []
+  shrink x = genericShrink x
 
 varWeight :: W "Var"
 varWeight = 4
