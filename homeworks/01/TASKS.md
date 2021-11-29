@@ -514,8 +514,8 @@ mkArray :: ArrayStart -> ArraySize -> Array
 mkArrayStart :: Int -> Maybe ArrayStart
 mkArrayStart x = if x < 0 then Nothing else Just x
 -- arrays can't have a negative size
-mkArrayStart :: Int -> Maybe ArraySize
-mkArrayStart x = if x < 0 then Nothing else Just x
+mkArraySize :: Int -> Maybe ArraySize
+mkArraySize x = if x < 0 then Nothing else Just x
 ```
 
 
