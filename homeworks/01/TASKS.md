@@ -641,7 +641,7 @@ If
 ```haskell
 If
   (Var "x")
-  (Val 9)
+  (Val 18)
   (Val 9)
 ```
 
