@@ -45,7 +45,7 @@ git push -u origin HEAD
 ...повтаряме процеса add-commit-push докато не решим задачите...
 ```
 В някакъв момент, когато имате поне нещо push-нато, или когато се чувствате готови да
-ви гледам задачите, отивате в GitHub и [правите pull request](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) от клона ви с решението на домашното към `master`.
+ви гледам задачите, отивате в GitHub и [правите pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) от клона ви с решението на домашното към `master`.
 
 Това **не е финалното предаване на домашното** и е напълно очаквано, преди крайния срок за домашното, да ви пиша коментари по pull request-а, на които вие да отговаряте или със собствени ваши коментари, или оправяйки кода си.
 
