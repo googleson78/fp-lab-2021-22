@@ -158,15 +158,15 @@ Just 5
 Примери:
 
 ```haskell
-> maybeAndThen (lookup "x" [("x", 5)]) (\xVal -> Just $ x * x)
+> maybeAndThen (lookup "x" [("x", 5)]) (\xVal -> Just $ xVal * xVal)
 Just 25
-> maybeAndThen (lookup "x" [("y", 5)]) (\xVal -> Just $ x * x)
+> maybeAndThen (lookup "x" [("y", 5)]) (\xVal -> Just $ xVal * xVal)
 Nothing
 > maybeAndThen (lookup "x" [("x", 5)]) (\xVal -> if even xVal then Just xVal else Nothing)
 Nothing
 > maybeAndThen (lookup "x" [("x", 6)]) (\xVal -> if even xVal then Just xVal else Nothing)
 Just 6
-> lookup "x" [("x", 5)] `maybeAndThen` \xVal -> Just $ x - 1
+> lookup "x" [("x", 5)] `maybeAndThen` \xVal -> Just $ xVal - 1
 Just 4
 ```
 
