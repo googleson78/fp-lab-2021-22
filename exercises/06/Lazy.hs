@@ -7,7 +7,6 @@
 module Lazy where
 
 import Prelude hiding (scanl, until, foldl)
-import Debug.Trace (traceShow)
 
 
 -- x = x
@@ -43,6 +42,9 @@ isZero (Suc _) = False
 
 ones :: [Integer]
 ones = 1 : ones
+
+join' :: (a -> a -> b) -> a -> b
+join' f x = f x x
 
 -- data Stream a = Cons a (Stream a)
 --   deriving Show
