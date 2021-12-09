@@ -6,7 +6,7 @@
 
 module Lazy where
 
-import Prelude hiding (scanl, until)
+import Prelude hiding (scanl, until, foldl)
 import Debug.Trace (traceShow)
 
 
@@ -14,12 +14,83 @@ import Debug.Trace (traceShow)
 --
 -- x = 1 + x
 
+--
+take' :: Int -> [a] -> [a]
+take' 0 _ = []
+take' _ [] = []
+take' n (_:xs) = take' (n - 1) xs
+
+--x :: Int -> Int
+--x = x
+
+--f :: .. -> .. -> u
+--f x y = (z :: u)
+
 data Nat = Zero | Suc Nat
   deriving Show
+
+--x :: Nat
+--x = Suc x
+
+isZero :: Nat -> Bool
+isZero Zero = True
+isZero (Suc _) = False
+
 -- x = Suc x
 
 -- data Stream a
 -- ones = undefined
+
+ones :: [Integer]
+ones = 1 : ones
+
+-- data Stream a = Cons a (Stream a)
+--   deriving Show
+
+-- onesStream :: Stream Integer
+-- onesStream = Cons 1 onesStream
+-- []
+
+-- x :: Integer
+-- x = 5 + 10
+--
+-- y :: [Integer]
+-- y = [2 * 2, 4 * 4, 5 * 5, 6]
+--
+-- z :: (Integer, [Integer])
+-- z = (5 * 5, [1,2,3])
+
+-- foldr - не е опашко рекурсивно :(
+-- foldl - опашко рекурсивно :)
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl _ v [] = v
+foldl f v (x:xs) = foldl f (f v x) xs
+
+-- thunk
+-- "сметка която не е оценена"
+-- foldl (+) 0 [1,2,3] --
+-- foldl f 1 [2,3]
+-- foldl f 3 [3]
+-- foldl f 6 []
+
+-- seq
+-- > :t seq
+-- seq :: a -> b -> b
+-- ако (seq x y) е оценено, тогава със сигурност x и y ще са оценени
+-- x y (seq x y)
+-- y x (seq x y)
+-- невъзможно - y (seq x y) x
+
+-- foldl - не
+-- foldl' - да
+-- import Data.List (foldl')
+
+foldl' :: (b -> a -> b) -> b -> [a] -> b
+foldl' _ v [] = v
+foldl' f v (x:xs) = seq (f v x) (foldl' f (f v x) xs)
+
+-- deepseq
 
 -- explain and show :sprint
 -- when does evaluation happen?
