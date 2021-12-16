@@ -74,8 +74,8 @@ instance MyEq a => MyEq [a] where
 --  fromInteger 0 = Zero
 --  fromInteger n = Suc $ fromInteger $ n - 1
 
-f :: Integer -> Integer
-f x = x + 1
+--f :: Integer -> Integer
+--f x = x + 1
 
 -- lookup' Dog [(Dog, 5), (Cat, 6)]
 -- Just 5
