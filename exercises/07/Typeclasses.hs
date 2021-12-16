@@ -4,6 +4,8 @@
 {-# OPTIONS_GHC -fwarn-name-shadowing #-}          -- use different names!
 {-# OPTIONS_GHC -fwarn-incomplete-uni-patterns #-} -- warn about incomplete patterns v2
 
+{-# LANGUAGE InstanceSigs #-}
+
 module Typeclasses where
 
 import Prelude hiding (Semigroup(..), Monoid(..), mconcat, foldMap, fold, mtimes)
@@ -12,9 +14,101 @@ import Prelude hiding (Semigroup(..), Monoid(..), mconcat, foldMap, fold, mtimes
 -- remind about homework and projects
 
 -- motivation: lookup, sort, insert
+id' :: a -> a
+id' x = x
+
+-- f :: Integer -> Integer
+-- g :: Integer -> Integer
+-- f == g ????????
+sort'' :: [a] -> [a]
+sort'' = undefined
+
+class MyEq a where
+  eq :: a -> a -> Bool
+  eq x y = not $ neq x y
+  neq :: a -> a -> Bool
+  neq x y = not $ eq x y
+
+
+-- laws
+-- x y, x == y -> y == x
+-- ........................................ == y
+-- y == ........................................
+-- neq Dog Cat -> True
+
+data Animal = Dog | Cat
+  deriving (Show, Eq, Ord, Read)
+  -- read :: String -> a
+
+data Tuple a b = MkTuple a b
+  deriving (Show, Eq, Ord)
+
+instance MyEq Animal where
+  neq :: Animal -> Animal -> Bool
+  neq Cat Dog = True
+  neq Dog Cat = True
+  neq _ _ = False
+
+-- [x, y] == [u, v]
+-- x == u && y == v
+
+instance MyEq a => MyEq [a] where
+  eq [] [] = True
+  eq (x:xs) (y:ys) = eq x y && eq xs ys
+  eq _ _ = False
+
+-- Show
+-- class Show a where
+--   show :: a -> String
+--
+-- class Num a where
+--   (+)
+--   (*) .....
+--   fromInteger :: Integer -> a
+
+-- x <= y == x >= y
+
+-- data Nat = Zero | Suc Nat
+
+--instance Num Nat where
+--  fromInteger 0 = Zero
+--  fromInteger n = Suc $ fromInteger $ n - 1
+
+f :: Integer -> Integer
+f x = x + 1
+
+-- lookup' Dog [(Dog, 5), (Cat, 6)]
+-- Just 5
+-- lookup' Dog [(Cat, 6)]
+-- Nothing
+--lookup' :: MyEq a => a -> [(a, b)] -> Maybe b
+--lookup' _ [] = Nothing
+--lookup' x ((k, v):ys) =
+--  if eq x k
+--  then undefined
+--  else undefined
+
+-- class Eq a where
+--   (==) :: a -> a -> Bool
+--   (/=) :: a -> a -> Bool
+
+-- x == y = x <= y || y <= x
+-- x == y = compare x y == EQ
+
+-- class Eq a => Ord a where
+--   (<=) :: a -> a -> Bool
+--
+--   compare :: a -> a -> Ordering
+
+-- x <= y
+-- True
+-- x < y или x == y
+-- data Ordering = LT | EQ | GT
+
 -- interfaces/abstract classes vs type classes
 -- Eq, Ord
 -- class definition syntax
+-- show with an enum?
 -- instance definition syntax -- mention show instancesigs, superclass constraints
 -- using type classes - constraints and solving
 -- other examples: Show, Read, Enum, Integral, Num
@@ -22,14 +116,32 @@ import Prelude hiding (Semigroup(..), Monoid(..), mconcat, foldMap, fold, mtimes
 -- default methods - Ord, Ordering
 -- deriving is cool
 --   show RPS beats using derived Enum and Eq
+--   explain how derived Eq and Ord work
 -- laws
 -- Monoid (Semigroup?) -- write it out so students can see it
 -- remind newtypes
 -- only one instance per type - use newtypes
 
+-- Monoid е група без обратни елементи
+--
+-- Integer, (+)
+-- mempty = 0
+-- (<>) = (+)
+-- Integer, (*)
+--
 class Monoid a where
   mempty :: a
   (<>) :: a -> a -> a
+-- полугрупа, Semigroup
+
+-- (x <> y) <> z == x <> (y <> z)
+-- class Semigroup a where
+--   (<>) :: a -> a -> a
+
+-- mempty <> x == x
+-- x <> mempty == x
+-- class Semigroup a => Monoid a where
+--   mempty :: a
 
 -- EXERCISE
 -- implement (<=) using compare
