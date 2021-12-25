@@ -1,0 +1,40 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           fourth-hw
+version:        0.0.0
+build-type:     Simple
+
+library
+  exposed-modules:
+      Instances
+      Trees
+  other-modules:
+      Paths_fourth_hw
+  hs-source-dirs:
+      src
+  ghc-options: -Werror -Wincomplete-patterns -Wunused-binds -Wunused-matches -Wmissing-signatures -Wname-shadowing -Wincomplete-uni-patterns
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+test-suite test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      InstancesSpec
+      TreesSpec
+      Paths_fourth_hw
+  hs-source-dirs:
+      test
+  ghc-options: -Werror -Wincomplete-patterns -Wunused-binds -Wunused-matches -Wmissing-signatures -Wname-shadowing -Wincomplete-uni-patterns -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , base >=4.7 && <5
+    , fourth-hw
+    , hspec
+    , hspec-discover
+  default-language: Haskell2010
