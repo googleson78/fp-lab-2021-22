@@ -21,11 +21,67 @@
 module FunctorFoldable where
 
 import Prelude hiding (Foldable(..), Functor(..), length, sum, toList)
-import Data.Monoid (Endo(..))
+import Data.Monoid (Endo(..), Sum (Sum, getSum))
 import Data.Kind (Type)
 
 -- motivation:
+
 -- map, foldMap - same funs for List, Maybe, Tree
+
+-- map :: (a -> b) -> [] a -> [] b
+-- mapMaybe :: (a -> b) -> Maybe a -> Maybe b
+-- mapTree :: (a -> b) -> Tree a -> Tree b
+
+-- class Eq a where
+--   (==) :: a -> a -> a
+
+-- class MyEq (a :: Type) where
+
+-- Type Тип
+-- *
+
+-- Type -> Type
+-- category theory
+-- Functor
+
+-- fmap id xs == xs
+-- fmap f (fmap g xs) == fmap (f . g) xs
+-- fmap f . fmap g == fmap (f . g)
+--class Functor (f :: Type -> Type) where
+--  fmap :: (a -> b) -> f a -> f b
+--
+--instance Functor [] where
+--  fmap :: (a -> b) -> [a] -> [b]
+--  fmap = map
+--
+--instance Functor Maybe where
+--  fmap :: (a -> b) -> Maybe a -> Maybe b
+--  fmap _ Nothing = Nothing
+--  fmap f (Just x) = Just (f x)
+
+-- kind
+-- instance Mappable Int where
+--   fmap :: (a -> b) -> Int a -> Int b
+
+-- стойност :: тип :: вид
+-- value :: type :: kind
+
+-- 0        1       2
+
+-- 0 :: Int :: *
+-- Int :: Type
+-- Maybe :: Type -> Type
+
+type Apply f a = f a
+
+--x :: Apply Maybe Int
+---- x :: Maybe Int
+--x = Just 5
+
+-- f :: (Int -> Int) -> Int -> Int
+-- f = undefined
+
+
 -- abstract away
 -- * name overloading for commonly used functions
 -- * can write lots of operations that're polymorphic over the container
@@ -39,10 +95,10 @@ import Data.Kind (Type)
 
 type Id a = a
 
-newtype Identity a = Identity a
+newtype Identity a = MkIdentity a
   deriving Show
 
-data Pair a = Pair a a
+data Pair a = MkPair a a
 
 data Tuple a b = MkTuple a b
   deriving Show
@@ -55,6 +111,43 @@ data Tuple a b = MkTuple a b
 --
 --instance Functor Tree where
 --  fmap = undefined
+
+--listFoldMap :: Monoid m => (a -> m) -> [a] -> m
+--listFoldMap _ [] = mempty
+--listFoldMap f (x:xs) = f x <> listFoldMap f xs
+--
+--maybeFoldMap :: Monoid m => (a -> m) -> Maybe a -> m
+--maybeFoldMap _ Nothing = mempty
+--maybeFoldMap f (Just x) = f x
+--
+--data Tree a = Empty | Node (Tree a) a (Tree a)
+--
+--treeFoldMap :: Monoid m => (a -> m) -> Tree a -> m
+--treeFoldMap _ Empty = mempty
+--treeFoldMap f (Node l x r) =
+--  treeFoldMap f l <> f x <> treeFoldMap f r
+--
+--class Foldable f where
+--  foldMap :: Monoid m => (a -> m) -> f a -> m
+--  foldr :: (a -> b -> b) -> b -> f a -> b
+--
+--instance Foldable [] where
+--  foldr _ v [] = v
+--  foldr f v (x:xs) = f x $ foldr f v xs
+--  foldMap = undefined
+--
+--sum :: Foldable f => f Int -> Int
+--sum = foldr (+) 0
+--
+--toList :: Foldable f => f a -> [a]
+--toList = undefined
+
+-- foldr == foldMap
+
+-- foldMap' f = foldr (\x r -> f x <> r) mempty
+-- foldr' = ...foldMap...
+
+-- length, sum, all, any, elem, find
 
 -- Laws - what are they useful for? transformations
 -- fmap id == id
@@ -71,8 +164,6 @@ data Tuple a b = MkTuple a b
 --  | Node (Tree a) a (Tree a)
 --  deriving (Show, Eq, Ord, Functor, Foldable)
 
--- TODO: UNCOMMENT BELOW HERE BEFORE EXERCISE
-{-
 -- laws:
 -- fmap id == id
 -- fmap f . fmap g == id
@@ -253,4 +344,3 @@ fromId = undefined
 instance Functor Cont where
   fmap :: (a -> b) -> Cont a -> Cont b
   fmap = undefined
--}
