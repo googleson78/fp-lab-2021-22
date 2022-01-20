@@ -1,6 +1,6 @@
 {-# LANGUAGE InstanceSigs #-}
 
-module Parser where
+module Parser (Parser, runParser, parse, nom) where
 
 import Control.Applicative
 import Data.Maybe (listToMaybe)
@@ -143,12 +143,12 @@ instance Alternative Parser where
   px <|> py =
     MkParser $ \str -> runParser px str ++ runParser py str
 
-optional' :: Parser a -> Parser (Maybe a)
-optional' px = fmap Just px <|> pure Nothing
+--optional' :: Alternative m => m a -> m (Maybe a)
+--optional' px = fmap Just px <|> pure Nothing
 
 onlyUppers :: Parser [Char]
 onlyUppers = do
-  x <- optional' upperLetter
+  x <- optional upperLetter
   case x of
     Nothing -> pure []
     Just x' -> do

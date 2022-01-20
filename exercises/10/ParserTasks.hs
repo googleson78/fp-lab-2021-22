@@ -1,14 +1,27 @@
 module ParserTasks where
 
 import Parser
+import Control.Applicative
 
--- TODO: add here
-optional :: Parser a -> Parser (Maybe a)
-optional = undefined
+-- Things we have available:
+-- liftA2 :: (a -> b -> c) -> Parser a -> Parser b -> Parser c
+-- parse a single char - nom :: Parser char
+-- sequence parses - do-syntax
+-- succeed without consuming input - pure :: a -> Parser a
+-- try one of two - (<|>) :: Parser a -> Parser a -> Parser a
+-- always fail - empty :: Parser a
 
--- ?
+-- parseList parseInt
+-- "[1,2,3]" -> [1,2,3]
+-- parseList nom
+-- "[a,b,c]" -> ['a','b','c']
+
 parseList :: Parser a -> Parser [a]
-parseList = undefined
+parseList px = do
+  char '['
+  xs <- many (px <* optional (char ','))
+  char ']'
+  pure xs
 
 -- EXERCISE
 -- Parse *only* the given char
@@ -20,7 +33,11 @@ parseList = undefined
 -- >>> parse (char 'a') "ba"
 -- Nothing
 char :: Char -> Parser Char
-char exp = undefined
+char exp = do
+  x <- nom
+  if x == exp
+  then pure x
+  else empty
 
 -- EXERCISE
 -- Same as char, except instead of a specific char, we pass a
