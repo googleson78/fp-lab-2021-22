@@ -2,26 +2,216 @@
 
 module ParserCombinators where
 
-import Control.Applicative
+-- import Control.Applicative
 import Data.Maybe (listToMaybe)
-import Data.Char (ord, isSpace)
+import Data.Char (ord, isSpace, isUpper)
+
 
 
 -- what's a parser?
 -- figure it out together
 -- end goal: mostly ignore string manipulation, work with the Parser abstraction
 -- and *combinators* (functions manipulating Parsers) instead
+-- combinators:
+-- many px
+-- optional px
+-- char '('
+-- many integer
+-- char ')'
 
---type Parser a
--- parse :: ...
--- parser for char
--- nom
--- succeed
+type Parser a = String -> [(String, a)]
 
--- data LetterType = Vowel | Consonant
--- vowel or consonant
--- it's a functor - make it one, fmap, vowel or consonant
--- ask for record field, if it's not familiar just write a regular function
+-- char intheclub;
+-- int x;
+-- in -> [Int, VarName]
+-- парсни a "asdf" -> 'a'
+-- ("sdf", 'a')
+
+runParser :: Parser a -> String -> [(String, a)]
+runParser px str = px str
+
+parse :: Parser a -> String -> Maybe a
+parse px str =
+  case px str of
+    [] -> Nothing
+    (_, x):_ -> Just x
+
+
+nom :: Parser Char
+nom =
+  \str ->
+    case str of
+      [] -> []
+      c:rest -> [(rest, c)]
+
+succeed :: a -> Parser a
+succeed x =
+  \str -> [(str, x)]
+
+parse2 :: (a -> b -> c) -> Parser a -> Parser b -> Parser c
+parse2 f px py =
+  \str ->
+    [(rest2, f x y) | (rest1, x) <- px str, (rest2, y) <- py rest1]
+
+(>>>=) :: Parser a -> (a -> Parser b) -> Parser b
+px >>>= f =
+  \str ->
+    [(rest2, y) | (rest1, x) <- px str, (rest2, y) <- f x rest1]
+
+parseThreeChars :: Parser (Char, Char, Char)
+parseThreeChars =
+  --nom >>>= (\x -> (nom >>>= \y -> (nom >>>= \z -> succeed (x, y, z))))
+  nom >>>= \x ->
+  nom >>>= \y ->
+  nom >>>= \z ->
+    succeed (x, y, z)
+
+-- ако fail успее ще ни даде a
+failParser :: Parser a
+failParser = \_ -> []
+
+-- px <|> py
+-- str
+-- пробвай px върху str, ако стане, супер
+-- ако не, пробвай py върху str
+(<|>) :: Parser a -> Parser a -> Parser a
+px <|> py =
+  \str -> px str ++ py str
+
+char :: Char -> Parser Char
+char x =
+  nom >>>= \y ->
+    if x == y
+    then succeed x
+    else failParser
+
+upperLetter :: Parser Char
+upperLetter =
+  nom >>>= \x ->
+    if isUpper x
+    then succeed x
+    else failParser
+
+
+-- parse :: Parser a -> String -> Maybe a
+-- parse px str =
+--   case px str of
+--     [] -> Nothing
+--     (_, x):_ -> Just x
+
+
+{-
+twice :: Parser a -> Parser (a, a)
+twice px =
+  \str ->
+    let
+      (rest1, x) = px str
+      (rest2, y) = px rest1
+     in (rest2, (x, y))
+
+twoChars :: Parser (Char, Char)
+twoChars =
+  \str ->
+    case str of
+      x:y:rest -> (rest, (x,y))
+
+twoChars' :: Parser (Char, Char)
+twoChars' =
+  \str ->
+    let
+      (rest1, x) = nom str
+      (rest2, y) = nom rest1
+     in (rest2, (x, y))
+
+nChars :: Int -> Parser [Char]
+nChars 0 = succeed []
+nChars n =
+  \str ->
+    let
+      (rest1, x) = nom str
+      (rest2, xs) = nChars (n - 1) rest1
+     in (rest2, x:xs)
+
+-- lift2Maybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
+parse2 :: (a -> b -> c) -> Parser a -> Parser b -> Parser c
+parse2 f px py =
+  \str ->
+    let
+      (rest1, x) = px str
+      (rest2, y) = py rest1
+     in (rest2, f x y)
+
+twice' :: Parser a -> Parser (a, a)
+twice' px = parse2 (,) px px
+
+nChars' :: Int -> Parser [Char]
+nChars' 0 = succeed []
+nChars' n = parse2 (:) nom (nChars (n - 1))
+
+-- число n
+-- n реда съдържащи ....
+
+charToDigit :: Char -> Int
+charToDigit x = ord x - ord '0'
+
+-- цифра n
+-- n символчета
+
+-- парс Char
+-- ако 'a' -> parse 2
+-- ако не -> спираме парсването
+g :: Parser [Char]
+g =
+  \str ->
+    let
+      (rest1, x) = nom str
+     in
+      if x == 'a'
+      then
+        let
+          (rest2, y) = nom rest1
+          (rest3, z) = nom rest2
+         in (rest3, [x,y,z])
+      else (rest1, [x])
+
+intThenThatManyChars :: Parser [Char]
+intThenThatManyChars =
+  \str ->
+    let
+      (rest1, n) = nom str
+     in nChars' (charToDigit n) rest1
+
+intThenThatManyChars' :: Parser [Char]
+intThenThatManyChars' =
+  nom >>>= \n -> nChars' (charToDigit n)
+
+
+-- parseThreeChars {
+--   x := nom
+--   y := nom
+--   z := nom
+--   return (x, y, z)
+-- }
+parseThreeChars :: Parser (Char, Char, Char)
+parseThreeChars =
+  --nom >>>= (\x -> (nom >>>= \y -> (nom >>>= \z -> succeed (x, y, z))))
+  nom >>>= \x ->
+  nom >>>= \y ->
+  nom >>>= \z ->
+    succeed (x, y, z)
+
+parse2' :: (a -> b -> c) -> Parser a -> Parser b -> Parser c
+parse2' f px py =
+  px >>>= \x ->
+  py >>>= \y ->
+    succeed (f x y)
+-}
+
+--  \str ->
+--    let
+--      (rest1, n) = nom str
+--     in nChars' (charToDigit n) rest1
+
 
 -- what if we want to parse two chars?
 -- twoChars
@@ -51,6 +241,11 @@ import Data.Char (ord, isSpace)
 
 -- mention runParser is helpful for debugging
 -- show parse
+
+-- data LetterType = Vowel | Consonant
+-- vowel or consonant
+-- it's a functor - make it one, fmap, vowel or consonant
+-- ask for record field, if it's not familiar just write a regular function
 {-
 -}
 
