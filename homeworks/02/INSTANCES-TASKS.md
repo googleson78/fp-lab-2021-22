@@ -14,6 +14,7 @@ data Person = MkPerson String Int
 Разликата е че първото ни позволява следните две неща:
 * генерират се автоматично функции `name :: Person -> String` и `age :: Person -> Int` ("getter" функции)
 * позволява се ползването на синтаксиса(ите) за разглабяне на записи:
+
 ```haskell
 -- без записи
 showPerson :: Person -> String
