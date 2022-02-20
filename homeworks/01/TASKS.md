@@ -117,13 +117,13 @@ extend x n = ((x, n):)
 и съответно да намираме първо тях, когато има повече от едно свързване на дадена променлива
 със стойност.
 
-## Задачи
+## 27т. Задачи
 
-## Интерпретация
+## 13т. Интерпретация
 
 Първо - няколко помощни функции.
 
-### `lookup :: String -> Context -> Maybe Integer`
+### 1т. `lookup :: String -> Context -> Maybe Integer`
 
 Имплементирайте търсене на стойност по даден ключ.
 
@@ -142,7 +142,7 @@ Nothing
 Just 5
 ```
 
-### `maybeAndThen :: Maybe a -> (a -> Maybe b) -> Maybe b`
+### 1т. `maybeAndThen :: Maybe a -> (a -> Maybe b) -> Maybe b`
 
 Функция, която абстрахира "работата в контекст на `Maybe`".
 
@@ -216,7 +216,7 @@ getTwo x y ctxt =
 -- and it's also very close to something else we'll encounter later
 ```
 
-### `traverseListMaybe :: (a -> Maybe b) -> [a] -> Maybe [b]`
+### 2т. `traverseListMaybe :: (a -> Maybe b) -> [a] -> Maybe [b]`
 
 Функция, която вече сме виждали на упражнение:
 
@@ -279,7 +279,7 @@ Sum "i" (Var "i") (Var "i")
 Тя е свободна, тъй като участва в горната грнаица на сумата, но е и свързана, защото участва във вътрешния израз на сумата.
 
 
-### `freeVars :: Expr -> [String]`
+### 2т. `freeVars :: Expr -> [String]`
 
 Намерете всичките свободни променливи на даден израз.
 
@@ -293,13 +293,13 @@ Sum "i" (Var "i") (Var "i")
 ["i", "y", "z"]
 ```
 
-### `data OperType`
+### 1т. `data OperType`
 
 Напишете `OperType` типа, така че да поддържа поне събиране и умножение.
 
 В следващата задача за `eval` ще имплементираме и интерпретацията му като "двуместна функция".
 
-### `eval :: Context -> Expr -> Maybe Integer`
+### 6т. `eval :: Context -> Expr -> Maybe Integer`
 
 Тъй като вече имаме променливи, ще ни трябва някакъв начин да им даваме стойности.
 
@@ -369,10 +369,10 @@ Just 55
 Just 165
 ```
 
-## Компилация
+## 9т. Компилация
 Второ - още няколко помощни функции.
 
-### `intersperse :: a -> [a] -> [a]`
+### 1т. `intersperse :: a -> [a] -> [a]`
 
 Вмъкнете стойност между всеки два елемента на подадения списък:
 
@@ -386,7 +386,7 @@ Just 165
 []
 ```
 
-### `unwords :: [String] -> String`
+### 0.5т. `unwords :: [String] -> String`
 
 Слива списък от низове, слагайки празни места между тях.
 
@@ -402,7 +402,7 @@ Just 165
 "Pirin ate the pizza!"
 ```
 
-### `unlines :: [String] -> String`
+### 0.5т. `unlines :: [String] -> String`
 
 Слива списък от думи, слагайки нови редове между тях.
 
@@ -537,14 +537,14 @@ mkArraySize x = if x < 0 then Nothing else Just x
 Целта на това е да се намали "шумът", който получавате от тестовете, преди да сте започнали
 да имплементирате компилатор частта.
 
-### `printRacketExpr :: RacketExpr -> String`
+### 1т. `printRacketExpr :: RacketExpr -> String`
 
 Имплементирайте принтенето на единичен racket израз.
 
 * `Name x` искаме да се преврежда до `x`.
 * `List [x0, x1, ... xn]` искаме да се превежда до `(x0 x1 ... xn)`.
 
-### `printRacketProgram :: Context -> RacketProgram -> String`
+### 2т. `printRacketProgram :: Context -> RacketProgram -> String`
 
 Имплементирайте принтенето на racket програма.
 
@@ -575,7 +575,7 @@ mkArraySize x = if x < 0 then Nothing else Just x
 ```
 и така бихме могли да компилираме и изпълним `Var "x"`
 
-### `compileToRacket :: Expr -> RacketExpr`
+### 4т. `compileToRacket :: Expr -> RacketExpr`
 
 Имплементирайте главната функция, грижеща се за компилация.
 
@@ -590,7 +590,7 @@ mkArraySize x = if x < 0 then Nothing else Just x
 
 Можете да оставите за дефиниция `error "not supported"`.
 
-## Частично оценяване
+## 5т. Частично оценяване
 
 След като имаме компилатор, защо да не направим и оптимизационна стъпка за него.
 
@@ -660,7 +660,7 @@ If
 ако имахме странични ефекти, би било възможно условието да се провали по други
 начини (например опитваме се да четем несъществуващ файл).
 
-### `partialEval :: Expr -> Expr`
+### 5т. `partialEval :: Expr -> Expr`
 
 Имплементирайте функцията `partialEval`, която да прави описаната
 по-горе оптимизация.
@@ -705,20 +705,20 @@ If (Var "x") (Val 0) (Val 69)
 If (Var "x") (Var "x") (Val 69)
 ```
 
-## `Sum` бонуси
+## 10т. `Sum` бонуси
 
 ### Тестове
 
 За да пускате тестовете за `Sum`, сменете `solvingSum` на `True`.
 
-### Компилация
+### 3т. Компилация
 
 Разширете `compileToRacket` да поддържа и `Sum`.
 
 Тук най-вероятно ще ви се наложи да си направите допълнителна racket-ска функция,
 която да използвате в оценяването на `Sum`.
 
-### `partialEval`
+### 7т. `partialEval`
 
 Разширете `partialEval` да поддържа и `Sum`.
 
